@@ -8,6 +8,8 @@ class HabitsTable extends Table {
   late final id = integer().autoIncrement()();
   late final title = text().withLength(min: 4, max: 32)();
   late final group = integer().references(GroupsTable, #id)();
+  late final completed = boolean()();
+  late final lastModifiedAt = dateTime()();
   late final createdAt = dateTime()();
 }
 
