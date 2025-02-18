@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:habit_tracker/database/database.dart';
 
-void main() {
-  runApp(const MainApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final HabitsDatabase habitsDatabase = HabitsDatabase();
+
+  runApp(const Application());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class Application extends StatelessWidget {
+  const Application({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
+    return const MaterialApp();
   }
 }
