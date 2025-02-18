@@ -1,45 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:habit_tracker/features/groups/domain/repository/groups_repository.dart';
-import 'package:habit_tracker/features/groups/presentation/blocs/groups/groups_bloc.dart';
+import 'package:habit_tracker/features/habits/domain/repository/habits_repository.dart';
+import 'package:habit_tracker/features/habits/presentation/bloc/habits/habits_bloc.dart';
 
-class GroupsScreen extends StatelessWidget {
-  const GroupsScreen({super.key});
+class HabitsScreen extends StatelessWidget {
+  const HabitsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final groupId = ModalRoute.of(context)!.settings.arguments as int;
+
     return BlocProvider(
-      create: (context) => GroupsBloc(
-        groupsRepository: context.read<GroupsRepository>(),
-      )..add(const FetchGroupsEvent()),
+      create: (context) => HabitsBloc(
+        habitsRepository: context.read<HabitsRepository>(),
+      )..add(
+          FetchHabitsEvent(
+            groupId: groupId,
+          ),
+        ),
       child: Builder(builder: (context) {
         return Scaffold(
           body: SafeArea(
-            child: BlocBuilder<GroupsBloc, GroupsState>(
+            child: BlocBuilder<HabitsBloc, HabitsState>(
               builder: (context, state) {
-                if (state is GroupsIdle) {
+                if (state is HabitsIdle) {
                   return ListView.separated(
                     padding: EdgeInsets.all(16),
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                            '/habits',
-                            arguments: state.groups[index].id,
-                          );
-                        },
+                        onTap: () {},
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              state.groups[index].name,
+                              state.habits[index].title,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            Icon(
-                              Icons.chevron_right_rounded,
+                            Checkbox(
+                              value: state.habits[index].completed,
+                              onChanged: (value) {},
                             ),
                           ],
                         ),
@@ -48,9 +50,9 @@ class GroupsScreen extends StatelessWidget {
                     separatorBuilder: (context, index) {
                       return const SizedBox(height: 10);
                     },
-                    itemCount: state.groups.length,
+                    itemCount: state.habits.length,
                   );
-                } else if (state is GroupsLoading) {
+                } else if (state is HabitsLoading) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
