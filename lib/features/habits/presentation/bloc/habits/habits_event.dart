@@ -11,3 +11,13 @@ class FetchHabitsEvent extends HabitsEvent {
 
   final int groupId;
 }
+
+class AddHabitEvent extends HabitsEvent {
+  const AddHabitEvent({
+    required this.groupId,
+    required this.title,
+  });
+
+  final int groupId;
+  final String title;
+}

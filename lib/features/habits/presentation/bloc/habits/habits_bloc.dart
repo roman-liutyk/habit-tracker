@@ -10,6 +10,7 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
       : _habitsRepository = habitsRepository,
         super(const HabitsLoading()) {
     on<FetchHabitsEvent>(_fetchHabits);
+    on<AddHabitEvent>(_addHabit);
   }
 
   final HabitsRepository _habitsRepository;
@@ -21,5 +22,17 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
     emit(const HabitsLoading());
     final habits = await _habitsRepository.fetchHabits(groupId: event.groupId);
     emit(HabitsIdle(habits: habits));
+  }
+
+  Future<void> _addHabit(
+    AddHabitEvent event,
+    Emitter<HabitsState> emit,
+  ) async {
+    emit(const HabitsLoading());
+    await _habitsRepository.addHabit(
+      groupId: event.groupId,
+      title: event.title,
+    );
+    add(FetchHabitsEvent(groupId: event.groupId));
   }
 }

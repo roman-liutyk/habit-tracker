@@ -56,7 +56,7 @@ class HabitsDataSourceImpl implements HabitsDataSource {
     required int groupId,
   }) async {
     return await (_db.select(_db.habitsTable)
-          ..where((data) => data.id.equals(groupId)))
+          ..where((data) => data.group.equals(groupId)))
         .get();
   }
 

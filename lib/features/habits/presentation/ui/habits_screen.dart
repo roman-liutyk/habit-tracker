@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habit_tracker/features/habits/domain/repository/habits_repository.dart';
 import 'package:habit_tracker/features/habits/presentation/bloc/habits/habits_bloc.dart';
+import 'package:habit_tracker/features/habits/presentation/ui/components/add_habit_dialog.dart';
 
 class HabitsScreen extends StatelessWidget {
   const HabitsScreen({super.key});
@@ -66,7 +67,25 @@ class HabitsScreen extends StatelessWidget {
             child: Icon(
               Icons.add_rounded,
             ),
-            onPressed: () {},
+            onPressed: () async {
+              showDialog<String?>(
+                context: context,
+                builder: (context) {
+                  return AddHabitDialog();
+                },
+              ).then((value) {
+                if (value != null) {
+                  if (context.mounted) {
+                    context.read<HabitsBloc>().add(
+                          AddHabitEvent(
+                            groupId: groupId,
+                            title: value,
+                          ),
+                        );
+                  }
+                }
+              });
+            },
           ),
         );
       }),
