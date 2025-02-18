@@ -23,6 +23,16 @@ class HabitsDatabase extends _$HabitsDatabase {
   @override
   int get schemaVersion => 1;
 
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (Migrator m) async {
+        await m.createAll();
+        await customStatement('PRAGMA foreign_keys = ON');
+      },
+    );
+  }
+
   static QueryExecutor _openConnection() {
     return driftDatabase(
       name: 'habits_database',
