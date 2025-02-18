@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habit_tracker/common/widgets/add_item_dialog.dart';
 import 'package:habit_tracker/features/groups/domain/repository/groups_repository.dart';
 import 'package:habit_tracker/features/groups/presentation/blocs/groups/groups_bloc.dart';
 
@@ -64,7 +65,22 @@ class GroupsScreen extends StatelessWidget {
             child: Icon(
               Icons.add_rounded,
             ),
-            onPressed: () {},
+            onPressed: () {
+              showDialog<String?>(
+                context: context,
+                builder: (context) {
+                  return AddItemDialog();
+                },
+              ).then((value) {
+                if (value != null) {
+                  if (context.mounted) {
+                    context.read<GroupsBloc>().add(
+                          AddGroupEvent(name: value),
+                        );
+                  }
+                }
+              });
+            },
           ),
         );
       }),

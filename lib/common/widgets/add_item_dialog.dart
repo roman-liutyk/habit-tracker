@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class AddHabitDialog extends StatefulWidget {
-  const AddHabitDialog({super.key});
+class AddItemDialog extends StatefulWidget {
+  const AddItemDialog({super.key});
 
   @override
-  State<AddHabitDialog> createState() => _AddHabitDialogState();
+  State<AddItemDialog> createState() => _AddItemDialogState();
 }
 
-class _AddHabitDialogState extends State<AddHabitDialog> {
+class _AddItemDialogState extends State<AddItemDialog> {
   final TextEditingController _titleController = TextEditingController();
   final FocusNode _titleFocusNode = FocusNode();
 
