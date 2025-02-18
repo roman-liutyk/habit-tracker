@@ -19,6 +19,8 @@ abstract class HabitsDataSource {
   Future<void> deleteHabit({
     required int habitId,
   });
+
+  Future<void> resetCompletedHabits();
 }
 
 class HabitsDataSourceImpl implements HabitsDataSource {
@@ -73,6 +75,24 @@ class HabitsDataSourceImpl implements HabitsDataSource {
         lastModifiedAt: Value(
           DateTime.now(),
         ),
+      ),
+    );
+  }
+
+  @override
+  Future<void> resetCompletedHabits() async {
+    final now = DateTime.now();
+
+    final startOfToday = DateTime(now.year, now.month, now.day);
+
+    await (_db.update(_db.habitsTable)
+          ..where((h) =>
+              h.lastModifiedAt.isSmallerThanValue(startOfToday) &
+              h.completed.equals(true)))
+        .write(
+      HabitsTableCompanion(
+        completed: const Value(false),
+        lastModifiedAt: Value(DateTime.now()),
       ),
     );
   }

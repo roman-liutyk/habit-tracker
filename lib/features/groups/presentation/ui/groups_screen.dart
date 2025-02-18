@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habit_tracker/common/di/dependencies_container.dart';
 import 'package:habit_tracker/common/widgets/add_item_dialog.dart';
-import 'package:habit_tracker/features/groups/domain/repository/groups_repository.dart';
 import 'package:habit_tracker/features/groups/presentation/blocs/groups/groups_bloc.dart';
 
 class GroupsScreen extends StatelessWidget {
@@ -11,7 +11,8 @@ class GroupsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GroupsBloc(
-        groupsRepository: context.read<GroupsRepository>(),
+        groupsRepository:
+            context.read<DependenciesContainer>().groupsRepository,
       )..add(const FetchGroupsEvent()),
       child: Builder(builder: (context) {
         return Scaffold(
