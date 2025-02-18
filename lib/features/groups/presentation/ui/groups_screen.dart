@@ -25,7 +25,7 @@ class GroupsScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).pushNamed(
                             '/habits',
-                            arguments: state.groups[index].id,
+                            arguments: state.groups[index],
                           );
                         },
                         child: Row(

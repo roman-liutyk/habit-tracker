@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habit_tracker/features/groups/domain/entity/group_entity.dart';
 import 'package:habit_tracker/features/habits/domain/repository/habits_repository.dart';
 import 'package:habit_tracker/features/habits/presentation/bloc/habits/habits_bloc.dart';
 import 'package:habit_tracker/features/habits/presentation/ui/components/add_habit_dialog.dart';
@@ -9,18 +10,21 @@ class HabitsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groupId = ModalRoute.of(context)!.settings.arguments as int;
+    final group = ModalRoute.of(context)!.settings.arguments as GroupEntity;
 
     return BlocProvider(
       create: (context) => HabitsBloc(
         habitsRepository: context.read<HabitsRepository>(),
       )..add(
           FetchHabitsEvent(
-            groupId: groupId,
+            groupId: group.id,
           ),
         ),
       child: Builder(builder: (context) {
         return Scaffold(
+          appBar: AppBar(
+            title: Text(group.name),
+          ),
           body: SafeArea(
             child: BlocBuilder<HabitsBloc, HabitsState>(
               builder: (context, state) {
@@ -33,12 +37,17 @@ class HabitsScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              state.habits[index].title,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
+                            Expanded(
+                              child: Text(
+                                state.habits[index].title,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
+                            ),
+                            const SizedBox(
+                              width: 10,
                             ),
                             Checkbox(
                               value: state.habits[index].completed,
@@ -78,7 +87,7 @@ class HabitsScreen extends StatelessWidget {
                   if (context.mounted) {
                     context.read<HabitsBloc>().add(
                           AddHabitEvent(
-                            groupId: groupId,
+                            groupId: group.id,
                             title: value,
                           ),
                         );
