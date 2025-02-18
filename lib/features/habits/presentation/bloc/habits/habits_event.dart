@@ -25,3 +25,11 @@ class UpdateHabitEvent extends HabitsEvent {
   final int id;
   final bool completed;
 }
+
+class DeleteHabitEvent extends HabitsEvent {
+  const DeleteHabitEvent({
+    required this.id,
+  });
+
+  final int id;
+}

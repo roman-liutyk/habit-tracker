@@ -15,6 +15,7 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
     on<FetchHabitsEvent>(_fetchHabits);
     on<AddHabitEvent>(_addHabit);
     on<UpdateHabitEvent>(_updateHabit);
+    on<DeleteHabitEvent>(_deleteHabit);
   }
 
   final HabitsRepository _habitsRepository;
@@ -48,6 +49,16 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
     await _habitsRepository.updateHabit(
       habitId: event.id,
       completed: event.completed,
+    );
+    add(const FetchHabitsEvent());
+  }
+
+  Future<void> _deleteHabit(
+    DeleteHabitEvent event,
+    Emitter<HabitsState> emit,
+  ) async {
+    await _habitsRepository.deleteHabit(
+      habitId: event.id,
     );
     add(const FetchHabitsEvent());
   }

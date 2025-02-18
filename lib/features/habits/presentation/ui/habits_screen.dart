@@ -57,6 +57,21 @@ class HabitsScreen extends StatelessWidget {
                               }
                             },
                           ),
+                          const SizedBox(
+                            width: 2,
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              context.read<HabitsBloc>().add(
+                                    DeleteHabitEvent(
+                                      id: state.habits[index].id,
+                                    ),
+                                  );
+                            },
+                            icon: Icon(
+                              Icons.delete_rounded,
+                            ),
+                          ),
                         ],
                       );
                     },
