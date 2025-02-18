@@ -15,11 +15,8 @@ class HabitsScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => HabitsBloc(
         habitsRepository: context.read<HabitsRepository>(),
-      )..add(
-          FetchHabitsEvent(
-            groupId: group.id,
-          ),
-        ),
+        groupId: group.id,
+      )..add(const FetchHabitsEvent()),
       child: Builder(builder: (context) {
         return Scaffold(
           appBar: AppBar(
@@ -32,29 +29,35 @@ class HabitsScreen extends StatelessWidget {
                   return ListView.separated(
                     padding: EdgeInsets.all(16),
                     itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                state.habits[index].title,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              state.habits[index].title,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Checkbox(
-                              value: state.habits[index].completed,
-                              onChanged: (value) {},
-                            ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Checkbox(
+                            value: state.habits[index].completed,
+                            onChanged: (value) {
+                              if (value != null) {
+                                context.read<HabitsBloc>().add(
+                                      UpdateHabitEvent(
+                                        id: state.habits[index].id,
+                                        completed: value,
+                                      ),
+                                    );
+                              }
+                            },
+                          ),
+                        ],
                       );
                     },
                     separatorBuilder: (context, index) {
@@ -86,10 +89,7 @@ class HabitsScreen extends StatelessWidget {
                 if (value != null) {
                   if (context.mounted) {
                     context.read<HabitsBloc>().add(
-                          AddHabitEvent(
-                            groupId: group.id,
-                            title: value,
-                          ),
+                          AddHabitEvent(title: value),
                         );
                   }
                 }
