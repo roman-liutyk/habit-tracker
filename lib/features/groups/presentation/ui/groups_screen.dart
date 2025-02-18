@@ -21,7 +21,24 @@ class GroupsScreen extends StatelessWidget {
                   return ListView.separated(
                     padding: EdgeInsets.all(16),
                     itemBuilder: (context, index) {
-                      return Text(state.groups[index].name);
+                      return GestureDetector(
+                        onTap: () {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              state.groups[index].name,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Icon(
+                              Icons.chevron_right_rounded,
+                            ),
+                          ],
+                        ),
+                      );
                     },
                     separatorBuilder: (context, index) {
                       return const SizedBox(height: 10);
@@ -37,6 +54,12 @@ class GroupsScreen extends StatelessWidget {
                 }
               },
             ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            child: Icon(
+              Icons.add_rounded,
+            ),
+            onPressed: () {},
           ),
         );
       }),
